@@ -1,6 +1,3 @@
-#' @import utils
-utils::globalVariables('.data')
-
 #' Determine operating system
 #'
 #' @param os_mode Manual override of which OS to use. Probably only useful for developer.
@@ -34,7 +31,7 @@ determine_system <- function(os_mode = NULL) {
 #' @param match_argument Not used, but allows you to check for other names of the snippet file (for development use.)
 #'
 #' @return Path pointing to snippet file if it exists. Otherwise instructions on how to create it.
-#'
+#' @export
 locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudio_path=NULL, snippet_path=NULL, match_argument="r.snippets") {
 
   null_sum <- as.numeric(!is.null(win_user_name)) + as.numeric(!is.null(rstudio_path)) + as.numeric(!is.null(snippet_path)) + as.numeric(!is.null(be_my_guess))
@@ -163,7 +160,7 @@ locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudi
 #' @param snippet_path The path pointing to your snippet file. Returned by the function 'locate_snippet_file()'
 #'
 #' @return Checks if a edit_snippet snippet exists. If not, asks if you want to add it automatically or manually.
-#'
+#' @export
 add_snippet_edit_shortcut <- function(snippet_path) {
 
   if(!file.exists(snippet_path)){stop("You tried to add a snippet shortcut without having a valid path for a snippet file.")}
@@ -233,6 +230,7 @@ add_snippet_edit_shortcut <- function(snippet_path) {
 #' @param snippet_path Path pointing to your snippet file ("r.snippets")
 #'
 #' @return Checks if the snippet file exists. If it does, checks if a edit_snippet snippet exists. If not, asks if you want to add it automatically or manually.
+#' @export
 let_there_be_snippets <- function(be_my_guess = NULL, win_user_name = NULL, rstudio_path=NULL, snippet_path=NULL) {
 
  snippet_path <- locate_snippet_file(be_my_guess, win_user_name, rstudio_path, snippet_path)
