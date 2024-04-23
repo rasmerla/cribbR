@@ -1,5 +1,7 @@
 library(dplyr)
 
+utils::globalVariables('.data')
+
 #' Determine operating system
 #'
 #' @param os_mode
@@ -63,13 +65,13 @@ locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudi
 
   if(be_my_guess==T){
     users_folders <- list.dirs("c:/Users/", full.names = F, recursive = F) %>%
-      as.data.frame() %>% dplyr::rename(folder = 1) %>%
+      as.data.frame() %>% dplyr::rename("folder" = 1) %>%
       dplyr::mutate(row = dplyr::row_number()) %>%
-      dplyr::relocate(row, folder)
+      dplyr::relocate(.data$row, .data$folder)
 
     suggested_folder <- users_folders %>%
-      dplyr::filter(grepl(folder, pattern="\\d\\d\\d\\d")) %>%
-      dplyr::pull(row)
+      dplyr::filter(grepl(.data$folder, pattern="\\d\\d\\d\\d")) %>%
+      dplyr::pull(.data$row)
 
     suggested_folder <- suggested_folder[1]
 
@@ -82,7 +84,7 @@ locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudi
     folder_line <- readline("Select the one you want by entering the line number here: ")
 
     win_user_name <- users_folders %>%
-      dplyr::filter(row == folder_line) %>% dplyr::pull(folder)
+      dplyr::filter(row == folder_line) %>% dplyr::pull(.data$folder)
 
     message(paste0("You selected row number ", folder_line, "\nthat means folder ", win_user_name, ". Enjoy."))
 
@@ -112,15 +114,15 @@ locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudi
       snippet_found <- NULL # dummy value
 
       snippet_folder <- list.dirs(rstudio_path) %>%
-        as.data.frame() %>% dplyr::rename(path = 1) %>%
-        dplyr::filter(grepl(path, pattern="snippet")) %>% dplyr::pull(path)
+        as.data.frame() %>% dplyr::rename("path" = 1) %>%
+        dplyr::filter(grepl(.data$path, pattern="snippet")) %>% dplyr::pull(.data$path)
 
       if(length(snippet_folder) == 0) {snippet_found <- FALSE} else {if(dir.exists(snippet_folder) == FALSE){snippet_found <- FALSE}}
 
       if(is.null(snippet_found)) {
 
-      snippet_path <- list.files(snippet_folder, full.names = T, recursive = T) %>% as.data.frame() %>% dplyr::rename(path = 1) %>%
-         dplyr::filter(grepl(path, pattern=match_argument)) %>% dplyr::pull(path)
+      snippet_path <- list.files(snippet_folder, full.names = T, recursive = T) %>% as.data.frame() %>% dplyr::rename("path" = 1) %>%
+         dplyr::filter(grepl(.data$path, pattern=match_argument)) %>% dplyr::pull(.data$path)
 
       if(length(snippet_path) == 0){snippet_found <- FALSE} else {snippet_found <- TRUE}
       }
@@ -171,7 +173,7 @@ add_snippet_edit_shortcut <- function(snippet_path) {
 
   if(grepl(pattern="snippet edit_snippets", readLines(snippet_path)) %>% any()){
     message(paste0("\n\n", crayon::underline("You already have a snippet to easily edit your snippets!")))
-    message("Make sure that you have snippets activated.\nThen start typing ´edit_snippets´ and hit tab when the suggestion is showing. Enjoy.\n\n
+    message("Make sure that you have snippets activated.\nThen start typing 'edit_snippets' and hit tab when the suggestion is showing. Enjoy.\n\n
                       *** If the snippet does not show, Rstudio has not loaded the updated file. Wait a while or restart Rstudio. ***")
   } else {
 
@@ -188,7 +190,7 @@ add_snippet_edit_shortcut <- function(snippet_path) {
       message("Now you can try to edit your snippets by typing
               'edit_snippets'")
 
-      message("Make sure that you have snippets activated.\nThen start typing ´edit_snippets´ and hit tab when the suggestion is showing. Enjoy.\n\n
+      message("Make sure that you have snippets activated.\nThen start typing 'edit_snippets' and hit tab when the suggestion is showing. Enjoy.\n\n
                       *** If the snippet does not show, Rstudio has not loaded the updated file. Wait a while or restart Rstudio. ***")
 
     } else {
