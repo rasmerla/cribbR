@@ -244,6 +244,8 @@ let_there_be_snippets <- function(be_my_guess = NULL, win_user_name = NULL, rstu
 
 
 
+
+
 # let_there_be_snippets()
 # let_there_be_snippets(win_user_name = "raer1762")
 # let_there_be_snippets(snippet_path = "c:/Users/raer1762/AppData/Roaming/RStudio/snippets/r.snippets")
