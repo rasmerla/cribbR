@@ -144,9 +144,9 @@ locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudi
 
   if(snippet_found == FALSE){
     message(paste0("Did not find any snippet file at the given location (", snippet_path,")"))
-    cat("\nTo 'create' the file, open the menue tools > Global options.\n
+    cat("\nTo 'create' the file, open the menu tools > Global options.\n
         Select 'Code' in the left column and cross 'Enable snippets'.\n
-        Add a blank line and save. Close all menues.")
+        Click 'Edit snippets...' and add a blank line at the end. Then save. Close all menus.")
     message("\n\nThen run this function again. Enjoy.")
 
     return(snippet_found)

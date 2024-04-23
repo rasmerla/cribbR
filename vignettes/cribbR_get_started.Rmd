@@ -1,0 +1,65 @@
+---
+title: "cribbR - Get started with Snippets!"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cribbR_get_started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<img align="right" src="cribbr_logo.svg" width ="25%" border="0" box-shadow="#FFFFFF">
+
+<style>
+    img {
+        border: 0;
+    }
+</style>
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+---
+
+> `Noun`
+> **cribber** (*plural* cribbers)
+> 
+> - One who cribs from others; a plagiarist.
+
+---
+
+ (The package was first to be named `cheatR`, but it was already taken.)
+
+## What are snippets?
+Snippets are a function in R-studio that provides 'snippets' (also known as "boilerplate code"). Chunks of code that you are likely to type often.
+
+A useful default example is 'lib' which gives you 'library()' and puts the cursor in within the brackets.
+
+But snippets becomes truly useful when you start to tailor make them to suit yourself!
+
+Unfortunately (well, not a big thing, really), the file containing your snippets is not created until you start to modify the defaults.
+
+## How to activate the custom snippets:
+To 'create' the file, open the menu tools > Global options
+
+Select 'Code' in the left column and cross 'Enable snippets'.
+
+Click 'Edit snippets...' and add a blank line at the end. Then save. Close all menus.")
+
+## Make snippets easily accesible:
+
+The `cribbR` package has (of course) a function to locate your snippets file, and add a snippet called `edit_snippets`. When this is added you can easily add access your snippets when ever you want, and add or update easily.
+
+```
+library(cribbR) # If you already have snippets activated you just have to type 'lib' and then hit tab!
+
+# In the simplest form, just run this command and follow the instructions.
+let_there_be_snippets()
+
+```
+
+When you have included the `edit_snippets`, it might now show up directly. It is a little bit unclear when R-studio loads the updated version. The easiest way to proceed is to restart R-studio the first time.
+

@@ -13,3 +13,7 @@ Imports:
     crayon,
     dplyr,
     magrittr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
