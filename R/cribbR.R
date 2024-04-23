@@ -1,3 +1,6 @@
+#' @import utils
+utils::globalVariables('.data')
+
 #' Determine operating system
 #'
 #' @param os_mode Manual override of which OS to use. Probably only useful for developer.
@@ -240,7 +243,8 @@ let_there_be_snippets <- function(be_my_guess = NULL, win_user_name = NULL, rstu
 
 }
 
-utils::globalVariables('.data')
+
+
 
 # let_there_be_snippets()
 # let_there_be_snippets(win_user_name = "raer1762")
