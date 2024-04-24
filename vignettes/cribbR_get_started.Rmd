@@ -36,9 +36,9 @@ knitr::opts_chunk$set(
 ## What are snippets?
 Snippets are a function in R-studio that provides 'snippets' (also known as "boilerplate code"). Chunks of code that you are likely to type often.
 
-A useful default example is 'lib' which gives you 'library()' and puts the cursor in within the brackets.
+A useful default example is 'lib' which gives you 'library()' and puts the cursor within the brackets.
 
-But snippets becomes truly useful when you start to tailor make them to suit yourself!
+Snippets becomes even more useful when you start to tailor them to suit your needs!
 
 Unfortunately (well, not a big thing, really), the file containing your snippets is not created until you start to modify the defaults.
 
