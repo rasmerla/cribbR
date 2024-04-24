@@ -292,7 +292,7 @@ robust_snippet_find <- function () {
 #' Basically a function that replaces everything else in the "locate_snippet_file()" etc.
 #'
 #' @return path to R-studio folder
-#'
+#' @export
 #'
 rstudio_path <- function ()
 {
