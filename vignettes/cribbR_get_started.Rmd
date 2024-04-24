@@ -61,5 +61,5 @@ let_there_be_snippets()
 
 ```
 
-When you have included the `edit_snippets`, it might now show up directly. It is a little bit unclear when R-studio loads the updated version. The easiest way to proceed is to restart R-studio the first time.
+When you have included the `edit_snippets`, it might not show up directly. It is a little bit unclear when R-studio loads the updated version. The easiest way to proceed is to restart R-studio. After a first restart, it seems to be updated quite instantly. 
 
