@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 )
 
 library(dplyr)
+library(cribbR)
 
 ```
 
@@ -199,14 +200,14 @@ snippet case_when
 
 
 ### Transform function output into data frame and rename column (and filter)
-```{r, eval=T}
+```{r, eval=F}
 
-rasmus_desktop <- list.files("C:/Users/raer1762/Desktop/") %>% 
+rstudio_data <- rstudio_path() %>% list.files(.) %>% 
   as.data.frame() %>% dplyr::rename(file_name = 1)
 
-print(rasmus_desktop)
+print(rstudio_data) %>% head()
 
-rasmus_desktop %>% 
+rstudio_data %>% 
   dplyr::filter(grepl(file_name, pattern="snippets"))
 
 ```

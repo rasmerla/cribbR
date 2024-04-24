@@ -35,7 +35,6 @@ determine_system <- function(os_mode = NULL) {
 #' @export
 locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudio_path=NULL, snippet_path=NULL, match_argument="r.snippets", robust_mode=F) {
 
-  restorepoint::restore.point("asdfasdfasdf_2", to.global = F)
 
   if(robust_mode==TRUE){be_my_guess<-NULL}
 
@@ -288,6 +287,26 @@ robust_snippet_find <- function () {
 
 }
 
+#' Find Rstudio folder
+#' @description
+#' Basically a function that replaces everything else in the "locate_snippet_file()" etc.
+#'
+#' @return path to R-studio folder
+#'
+#'
+rstudio_path <- function ()
+{
+  if (.Platform$OS.type == "windows") {
+    base <- rappdirs::user_config_dir("RStudio", appauthor = NULL)
+  }
+  else {
+    base <- rappdirs::user_config_dir("rstudio", os = "unix")
+  }
+  base %>% normalizePath()
+
+  gsub(base, pattern="\\\\", replacement="/") %>% paste0(., "/") %>%
+  return()
+}
 
 
 
