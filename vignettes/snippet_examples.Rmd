@@ -1,5 +1,5 @@
 ---
-title: "snippet_examples"
+title: "snippet examples"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{snippet_examples}
