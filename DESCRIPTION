@@ -12,7 +12,8 @@ RoxygenNote: 7.2.3
 Imports: 
     crayon,
     dplyr,
-    magrittr
+    magrittr,
+    usethis
 Suggests: 
     knitr,
     rmarkdown

@@ -29,16 +29,21 @@ determine_system <- function(os_mode = NULL) {
 #' @param rstudio_path Path to windows folder containing the R-studio installation ("c:/user/AppData/Roaming/Rstudio/")
 #' @param snippet_path Path pointing to your snippet file ("r.snippets")
 #' @param match_argument Not used, but allows you to check for other names of the snippet file (for development use.)
+#' @param robust_mode Default, a probably more robust way to find the path for the snippet file.
 #'
 #' @return Path pointing to snippet file if it exists. Otherwise instructions on how to create it.
 #' @export
-locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudio_path=NULL, snippet_path=NULL, match_argument="r.snippets") {
+locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudio_path=NULL, snippet_path=NULL, match_argument="r.snippets", robust_mode=F) {
 
-  null_sum <- as.numeric(!is.null(win_user_name)) + as.numeric(!is.null(rstudio_path)) + as.numeric(!is.null(snippet_path)) + as.numeric(!is.null(be_my_guess))
-  if(null_sum > 1) {stop("Please provide only 1 of the arguments 'be_my_guess', 'win_user_name', 'rstudio_path', 'snippet_path'")}
+  restorepoint::restore.point("asdfasdfasdf_2", to.global = F)
 
-  null_sum_2 <- as.numeric(!is.null(win_user_name)) + as.numeric(!is.null(rstudio_path)) + as.numeric(!is.null(snippet_path))
-  if(null_sum_2 == 1) {be_my_guess <- FALSE}
+  if(robust_mode==TRUE){be_my_guess<-NULL}
+
+  null_sum <- as.numeric(!is.null(win_user_name)) + as.numeric(!is.null(rstudio_path)) + as.numeric(!is.null(snippet_path)) + as.numeric(!is.null(be_my_guess)) + as.numeric(robust_mode==TRUE)
+  if(null_sum > 1) {stop("Please provide only 1 of the arguments 'be_my_guess', 'win_user_name', 'rstudio_path', 'snippet_path', 'robust_mode = TRUE'")}
+
+  null_sum_2 <- as.numeric(!is.null(win_user_name)) + as.numeric(!is.null(rstudio_path)) + as.numeric(!is.null(snippet_path)) + as.numeric(robust_mode==TRUE)
+  if(null_sum_2 > 0) {be_my_guess <- FALSE}
 
   os_mode <- determine_system()
 
@@ -48,13 +53,23 @@ locate_snippet_file <- function(be_my_guess = NULL, win_user_name = NULL, rstudi
     if(file.exists(snippet_path)) {snippet_found <- TRUE} else {snippet_found <- FALSE}
   }
 
+  if(robust_mode==T & is.null(snippet_path)){
+    snippet_path <- robust_snippet_find()
+    if(file.exists(snippet_path)) {
+      snippet_found <- TRUE
+      be_my_guess <- FALSE
+      } else {
+      snippet_found <- FALSE
+    }
+  }
+
   if(!is.null(snippet_path)){
     be_my_guess <- FALSE
     if(file.exists(snippet_path)) {snippet_found <- TRUE}
   }
 
   if(is.null(be_my_guess)){
-    if(is.null(win_user_name) & is.null(rstudio_path) & is.null(snippet_path)) {be_my_guess <- TRUE}
+    if(is.null(win_user_name) & is.null(rstudio_path) & is.null(snippet_path) & robust_mode==FALSE) {be_my_guess <- TRUE}
   }
 
   if(be_my_guess==T){
@@ -228,12 +243,14 @@ add_snippet_edit_shortcut <- function(snippet_path) {
 #' @param win_user_name The name of window user folder to use.
 #' @param rstudio_path Path to windows folder containing the R-studio installation ("c:/user/AppData/Roaming/Rstudio/")
 #' @param snippet_path Path pointing to your snippet file ("r.snippets")
+#' @param robust_mode Default, a probably more robust way to find the path for the snippet file.
 #'
 #' @return Checks if the snippet file exists. If it does, checks if a edit_snippet snippet exists. If not, asks if you want to add it automatically or manually.
 #' @export
-let_there_be_snippets <- function(be_my_guess = NULL, win_user_name = NULL, rstudio_path=NULL, snippet_path=NULL) {
+let_there_be_snippets <- function(be_my_guess = NULL, win_user_name = NULL, rstudio_path=NULL, snippet_path=NULL, robust_mode=T) {
 
- snippet_path <- locate_snippet_file(be_my_guess, win_user_name, rstudio_path, snippet_path)
+ snippet_path <- locate_snippet_file(be_my_guess = be_my_guess, win_user_name = win_user_name, rstudio_path = rstudio_path,
+                                     snippet_path = snippet_path, robust_mode = robust_mode)
 
  if(snippet_path != FALSE) {
    add_snippet_edit_shortcut(snippet_path)
@@ -241,6 +258,35 @@ let_there_be_snippets <- function(be_my_guess = NULL, win_user_name = NULL, rstu
 
 }
 
+
+#' A potentially more solid version to find the r.snippet
+#'
+#' @return The path to the snippet-file.
+#'
+robust_snippet_find <- function () {
+
+  message("entering robust mode")
+
+  file <- "r.snippets"
+
+  new_rstudio <- !rstudioapi::isAvailable() || rstudioapi::getVersion() >=
+    "1.3.0"
+
+  if(new_rstudio == FALSE){stop("This function won't work on rstudio 1.2")}
+
+  path <- paste0(usethis:::rstudio_config_path(),"/snippets/", file)
+
+  if (!file.exists(path)) {
+
+    message(paste0("Did not find any snippet file at the given location (", path,")"))
+    cat("\nTo 'create' the file, open the menu tools > Global options.\n
+        Select 'Code' in the left column and cross 'Enable snippets'.\n
+        Click 'Edit snippets...' and add a blank line at the end. Then save. Close all menus.")
+    message("\n\nThen run this function again. Enjoy.")
+
+  } else {return(path)}
+
+}
 
 
 
@@ -250,4 +296,6 @@ let_there_be_snippets <- function(be_my_guess = NULL, win_user_name = NULL, rstu
 # let_there_be_snippets(win_user_name = "raer1762")
 # let_there_be_snippets(snippet_path = "c:/Users/raer1762/AppData/Roaming/RStudio/snippets/r.snippets")
 # let_there_be_snippets(rstudio_path = "c:/Users/raer1762/AppData/Roaming/RStudio/")
+
+
 

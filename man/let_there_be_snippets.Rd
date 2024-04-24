@@ -8,7 +8,8 @@ let_there_be_snippets(
   be_my_guess = NULL,
   win_user_name = NULL,
   rstudio_path = NULL,
-  snippet_path = NULL
+  snippet_path = NULL,
+  robust_mode = T
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ let_there_be_snippets(
 \item{rstudio_path}{Path to windows folder containing the R-studio installation ("c:/user/AppData/Roaming/Rstudio/")}
 
 \item{snippet_path}{Path pointing to your snippet file ("r.snippets")}
+
+\item{robust_mode}{Default, a probably more robust way to find the path for the snippet file.}
 }
 \value{
 Checks if the snippet file exists. If it does, checks if a edit_snippet snippet exists. If not, asks if you want to add it automatically or manually.
